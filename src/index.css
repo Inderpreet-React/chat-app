@@ -23,3 +23,10 @@
 	[type="radio"] {
 	}
 }
+
+@layer utilities {
+	.Login-shape {
+		border-radius: 49% 51% 46% 54% / 51% 47% 53% 49%;
+		aspect-ratio: 1 / 1;
+	}
+}
