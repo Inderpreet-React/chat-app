@@ -18,6 +18,7 @@
 	[multiple],
 	textarea,
 	select {
+		@apply h-12 w-full rounded border-gray-400 bg-gray-100 shadow-md shadow-gray-500/30 transition-all focus:border-indigo-500 focus:shadow-indigo-500/30;
 	}
 	[type="checkbox"],
 	[type="radio"] {
@@ -25,8 +26,7 @@
 }
 
 @layer utilities {
-	.Login-shape {
-		border-radius: 49% 51% 46% 54% / 51% 47% 53% 49%;
-		aspect-ratio: 1 / 1;
+	.input-wrapper {
+		@apply flex flex-col gap-4;
 	}
 }

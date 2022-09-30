@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import SignupSvg from "../images/signupSvg.svg";
 
 export default function Signup() {
-	const inputClasses =
-		"w-full rounded border-gray-400 bg-gray-100 h-12 shadow-md shadow-gray-500/30 focus:shadow-indigo-500/30 focus:border-indigo-500 transition-all";
-	const inputsWrapper = "flex gap-4 flex-col";
-
 	return (
 		<div className="h-screen w-full bg-gray-100 md:p-8">
 			<div className="relative flex h-full w-full flex-col items-center justify-center gap-6 border-2 border-gray-800 bg-indigo-100 pt-0 md:flex-row md:justify-start md:p-8">
@@ -34,29 +30,17 @@ export default function Signup() {
 					</div>
 
 					<form className="mt-12 flex h-1/2 w-full flex-col justify-evenly gap-4 md:mt-24 md:w-3/4 md:self-end">
-						<div className={inputsWrapper}>
+						<div className="input-wrapper">
 							<p className="text-gray-600">Email</p>
-							<input
-								className={inputClasses}
-								type="email"
-								placeholder="eldermaster@69.com"
-							/>
+							<input type="email" placeholder="eldermaster@69.com" />
 						</div>
-						<div className={inputsWrapper}>
+						<div className="input-wrapper">
 							<p className="text-gray-600">Username</p>
-							<input
-								className={inputClasses}
-								type="text"
-								placeholder="Eldermaster69"
-							/>
+							<input type="text" placeholder="Eldermaster69" />
 						</div>
-						<div className={inputsWrapper}>
+						<div className="input-wrapper">
 							<p className="text-gray-600">Password</p>
-							<input
-								className={inputClasses}
-								type="password"
-								placeholder="**********"
-							/>
+							<input type="password" placeholder="**********" />
 						</div>
 						<button
 							className="mt-4 w-1/2 self-end rounded bg-indigo-500 px-8 py-3 font-semibold text-white transition hover:bg-indigo-600 md:mt-8 md:w-2/3"
