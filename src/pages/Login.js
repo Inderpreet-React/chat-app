@@ -18,13 +18,13 @@ export default function Login() {
 				</div>
 
 				<div className="flex h-3/4 w-3/4 flex-col md:h-5/6 md:w-1/2 md:p-4 md:pl-8">
-					<div className="flex h-1/6 w-full items-end  justify-between md:pl-[25%]">
+					<div className="flex h-1/6 w-full items-center  justify-between md:pl-[25%]">
 						<h1 className="text-4xl font-bold text-gray-600">Log in</h1>
 						<Link
 							to="/signup"
 							className="text-xl font-semibold italic text-indigo-600 underline underline-offset-8"
 						>
-							Sign up {">>"}
+							Sign up
 						</Link>
 					</div>
 
