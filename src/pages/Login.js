@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import LoginSvg from "../images/loginSvg.svg";
 
 export default function Login() {
@@ -17,11 +18,17 @@ export default function Login() {
 				</div>
 
 				<div className="flex h-3/4 w-3/4 flex-col md:h-5/6 md:w-1/2 md:p-4 md:pl-8">
-					<h1 className="h-1/6 w-full text-4xl font-bold text-gray-600 md:pl-[25%]">
-						Log in
-					</h1>
+					<div className="flex h-1/6 w-full items-end  justify-between md:pl-[25%]">
+						<h1 className="text-4xl font-bold text-gray-600">Log in</h1>
+						<Link
+							to="/signup"
+							className="text-xl font-semibold italic text-indigo-600 underline underline-offset-8"
+						>
+							Sign up {">>"}
+						</Link>
+					</div>
 
-					<form className="flex h-1/2 w-full flex-col justify-evenly gap-6 md:mt-20 md:w-3/4 md:self-end">
+					<form className="mt-12 flex h-1/2 w-full flex-col justify-evenly gap-6 md:mt-24 md:w-3/4 md:self-end">
 						<div className={inputsWrapper}>
 							<p className="text-gray-600">Username</p>
 							<input
