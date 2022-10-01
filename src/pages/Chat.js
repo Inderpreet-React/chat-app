@@ -3,12 +3,11 @@ import PageWrapper from "../PageWrapper";
 import MessagingSvg from "../images/messagingSvg.svg";
 import Avatar from "../images/avatar.png";
 import ChatDetails from "../components/ChatDetails";
-import ChatMessages from "../components/ChatMessages";
 import ChatBox from "../components/ChatBox";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 
 export default function Chat() {
-	const [chat, setCat] = useState(true);
+	const [chat, setChat] = useState(true);
 
 	return (
 		<PageWrapper additionalClasses="divide-y-2 md:divide-y-0 md:divide-x-2 divide-gray-700">

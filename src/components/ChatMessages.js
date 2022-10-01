@@ -5,7 +5,7 @@ export default function ChatMessages(props) {
 	const message = props.message;
 	return (
 		<li
-			className={`flex max-w-fit justify-end rounded px-4 text-white ${
+			className={`flex max-w-fit justify-end rounded px-4 py-2 text-white ${
 				isUser ? "self-end bg-indigo-400" : "self-start bg-gray-400"
 			}`}
 		>
