@@ -1,9 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageWrapper from "../PageWrapper";
 import { Link } from "react-router-dom";
 import SignupSvg from "../images/signupSvg.svg";
+import { updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, storage, db } from "../firebase";
 
 export default function Signup() {
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(false);
+	const navigate = useNavigate();
+
+	const submitHandler = async (e) => {
+		setLoading(true);
+		e.preventDefault();
+		const email = e.target[0].value;
+		const displayName = e.target[1].value;
+		const password = e.target[2].value;
+		const file = e.target[3].files[0];
+
+		try {
+			// User creation
+			const res = await createUserWithEmailAndPassword(auth, email, password);
+
+			// Image upload
+			const date = new Date().getTime();
+			const storageRef = ref(storage, `${displayName + date}`);
+
+			await uploadBytesResumable(storageRef, file).then(() => {
+				getDownloadURL(storageRef).then(async (downloadURL) => {
+					try {
+						//Update profile
+						await updateProfile(res.user, {
+							displayName,
+							photoURL: downloadURL,
+						});
+						//create user on firestore
+						await setDoc(doc(db, "users", res.user.uid), {
+							uid: res.user.uid,
+							displayName,
+							email,
+							photoURL: downloadURL,
+						});
+
+						//create empty user chats on firestore
+						await setDoc(doc(db, "userChats", res.user.uid), {});
+						navigate("/chat");
+					} catch (err) {
+						console.log(err);
+						setError(true);
+						setLoading(false);
+					}
+				});
+			});
+		} catch (err) {
+			setError(true);
+			console.log(err.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<PageWrapper>
 			<h1 className="absolute top-5 left-5 text-xl font-extrabold text-indigo-500 md:text-3xl">
@@ -29,7 +88,10 @@ export default function Signup() {
 					</Link>
 				</div>
 
-				<form className="mt-12 flex h-4/6 w-full flex-col justify-evenly gap-4 md:mt-24 md:w-3/4 md:self-end">
+				<form
+					onSubmit={submitHandler}
+					className="mt-12 flex h-4/6 w-full flex-col justify-evenly gap-4 md:mt-24 md:w-3/4 md:self-end"
+				>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Email</p>
 						<input type="email" placeholder="eldermaster@69.com" />
@@ -50,12 +112,16 @@ export default function Signup() {
 						/>
 					</div>
 					<button
-						className="w-1/2 self-end rounded bg-indigo-500 px-8 py-3 font-semibold text-white transition hover:bg-indigo-600 md:w-2/3"
+						className={`w-1/2 self-end rounded bg-indigo-500 px-8 py-3 font-semibold text-white transition hover:bg-indigo-600 disabled:text-gray-400 md:w-2/3 ${
+							loading ? "cursor-wait" : ""
+						}`}
 						type="submit"
+						disabled={loading}
 					>
 						Sign up
 					</button>
 				</form>
+				{error ? <p className="text-pink-500">"There was an error"</p> : ""}
 			</div>
 		</PageWrapper>
 	);
