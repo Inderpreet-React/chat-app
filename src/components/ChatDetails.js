@@ -6,7 +6,7 @@ export default function ChatDetails(props) {
 	const lastMessage = props.lastMessage || "Last Chat";
 
 	return (
-		<li className="flex h-full items-center gap-4">
+		<li className="flex h-full cursor-pointer items-center gap-4">
 			<img src={avatar} alt="Avatar" className="h-14 w-14" />
 			<div>
 				<h4 className="text-xl font-semibold">{name}</h4>
