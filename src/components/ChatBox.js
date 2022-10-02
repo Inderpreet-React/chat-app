@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useChat } from "../context/ChatContext";
 import ChatMessages from "./ChatMessages";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+	arrayUnion,
+	doc,
+	onSnapshot,
+	serverTimestamp,
+	Timestamp,
+	updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
+import { v4 as uuid } from "uuid";
 
 export default function ChatBox() {
 	const [messages, setMessages] = useState([]);
@@ -25,6 +33,33 @@ export default function ChatBox() {
 
 	async function handleSend() {
 		console.log("sending");
+		try {
+			await updateDoc(doc(db, "chats", data.chatId), {
+				messages: arrayUnion({
+					id: uuid(),
+					text,
+					senderId: currentUser.uid,
+					date: Timestamp.now(),
+				}),
+			});
+			await updateDoc(doc(db, "userChats", currentUser.uid), {
+				[data.chatId + ".lastMessage"]: {
+					text,
+				},
+				[data.chatId + ".date"]: serverTimestamp(),
+			});
+
+			await updateDoc(doc(db, "userChats", data.user.uid), {
+				[data.chatId + ".lastMessage"]: {
+					text,
+				},
+				[data.chatId + ".date"]: serverTimestamp(),
+			});
+
+			setText("");
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	function handleKey(e) {
@@ -40,10 +75,10 @@ export default function ChatBox() {
 			</div>
 			<div className="relative flex h-full w-full flex-col-reverse overflow-hidden overflow-y-auto border-2 border-gray-600 p-2 md:p-4">
 				<ul className="mb-20 flex flex-col items-end gap-4 ">
-					{messages.map((m) => {
+					{/* {messages.map((m) => {
 						console.log(m);
 						return <ChatMessages isUser={false} message={m} key={m.id} />;
-					})}
+					})} */}
 				</ul>
 			</div>
 			<div className="absolute bottom-0 left-0 flex h-12 w-full overflow-hidden border-2 border-gray-600 bg-gray-100 md:w-full">

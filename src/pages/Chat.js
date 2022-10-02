@@ -34,7 +34,6 @@ export default function Chat() {
 	}, [currentUser.uid]);
 
 	function handlerSelect(u) {
-		console.log("dispatched");
 		dispatch({ type: "CHANGE_USER", payload: u });
 	}
 
@@ -77,16 +76,18 @@ export default function Chat() {
 				<div className="h-full overflow-hidden overflow-y-auto rounded bg-indigo-100 p-1 md:bg-indigo-200">
 					<ul className="flex flex-col gap-2 divide-y-2 divide-indigo-600 ">
 						{chats
-							? Object.entries(chats).map((chat) => (
-									<ChatDetails
-										key={chat[0]}
-										name={chat[1].userInfo.displayName}
-										avatar={chat[1].userInfo.photoURL}
-										lastMessage={chat[1].lastMessage?.text}
-										details={chat[1]}
-										handlerSelect={handlerSelect}
-									/>
-							  ))
+							? Object.entries(chats)
+									.sort((a, b) => b[1].date - a[1].date)
+									.map((chat) => (
+										<ChatDetails
+											key={chat[0]}
+											name={chat[1].userInfo.displayName}
+											avatar={chat[1].userInfo.photoURL}
+											lastMessage={chat[1].lastMessage?.text}
+											details={chat[1]}
+											handlerSelect={handlerSelect}
+										/>
+									))
 							: ""}
 					</ul>
 				</div>
