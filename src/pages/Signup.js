@@ -47,6 +47,7 @@ export default function Signup() {
 
 						//create empty user chats on firestore
 						await setDoc(doc(db, "userChats", res.user.uid), {});
+						setLoading(false);
 						navigate("/chat");
 					} catch (err) {
 						console.log(err);
@@ -58,8 +59,6 @@ export default function Signup() {
 		} catch (err) {
 			setError(true);
 			console.log(err.message);
-		} finally {
-			setLoading(false);
 		}
 	};
 

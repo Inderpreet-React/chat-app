@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageWrapper from "../PageWrapper";
 import MessagingSvg from "../images/messagingSvg.svg";
 import Avatar from "../images/avatar.png";
@@ -14,12 +15,14 @@ import { signOut } from "firebase/auth";
 export default function Chat() {
 	const [chat, setChat] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
 	function logOutHandler() {
 		if (!loading) {
 			try {
 				setLoading(true);
 				signOut(auth);
+				navigate("/");
 			} catch (error) {
 				console.log(error.code, error.message);
 			} finally {
