@@ -56,7 +56,7 @@ export default function Search() {
 			console.log(e);
 		}
 		setUser(null);
-		setUser("");
+		setUserName("");
 	}
 
 	async function searchUser() {
