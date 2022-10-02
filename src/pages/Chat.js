@@ -11,10 +11,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 
 export default function Chat() {
 	const [chat, setChat] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const { currentUser } = useAuth();
 	const navigate = useNavigate();
 
 	function logOutHandler() {
@@ -38,8 +40,13 @@ export default function Chat() {
 					<h1 className="flex h-full items-end text-2xl font-semibold text-indigo-500">
 						Bruh Chat
 					</h1>
-					<div className="flex items-center justify-center">
-						<img src={Avatar} alt="Avatar" className="h-10 w-10" />
+					<div className="flex items-center justify-center gap-2 md:gap-4">
+						<span className="text-gray-600">{currentUser.displayName}</span>
+						<img
+							src={currentUser.photoURL}
+							alt="Avatar"
+							className="flex h-8 w-8 items-center justify-center rounded-full ring-2 ring-indigo-600"
+						/>
 						<ArrowRightOnRectangleIcon
 							onClick={logOutHandler}
 							className="h-8 w-8 cursor-pointer text-indigo-400 hover:text-indigo-600"
