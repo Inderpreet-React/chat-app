@@ -1,13 +1,63 @@
 import React, { useState } from "react";
 import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+	collection,
+	query,
+	where,
+	getDocs,
+	getDoc,
+	setDoc,
+	doc,
+	updateDoc,
+	serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 import SearchedUser from "./SearchedUser";
 
 export default function Search() {
 	const [userName, setUserName] = useState("");
 	const [user, setUser] = useState(null);
 	const [error, setError] = useState(false);
+	const { currentUser } = useAuth();
+
+	async function handlerSelect() {
+		const combinedId = currentUser.uid
+			? currentUser.uid + user.uid
+			: user.uid + currentUser.uid;
+		try {
+			const response = await getDoc(doc(db, "chats", combinedId));
+
+			if (!response.exists()) {
+				console.log("user does not exist creating user...");
+				await setDoc(doc(db, "chats", combinedId), { messages: [] });
+
+				await updateDoc(doc(db, "userChats", currentUser.uid), {
+					[combinedId + ".userInfo"]: {
+						uid: user.uid,
+						displayName: user.displayName,
+						photoURL: user.photoURL,
+					},
+					[combinedId + "date"]: serverTimestamp(),
+				});
+
+				await updateDoc(doc(db, "userChats", user.uid), {
+					[combinedId + ".userInfo"]: {
+						uid: currentUser.uid,
+						displayName: currentUser.displayName,
+						photoURL: currentUser.photoURL,
+					},
+					[combinedId + "date"]: serverTimestamp(),
+				});
+			} else {
+				console.log("Chat already exists");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+		setUser(null);
+		setUser("");
+	}
 
 	async function searchUser() {
 		if (userName) {
@@ -73,7 +123,11 @@ export default function Search() {
 				</div>
 			)}
 			{user ? (
-				<SearchedUser name={user.displayName} avatar={user.photoURL} />
+				<SearchedUser
+					name={user.displayName}
+					avatar={user.photoURL}
+					handlerSelect={handlerSelect}
+				/>
 			) : (
 				""
 			)}
