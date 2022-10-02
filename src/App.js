@@ -8,18 +8,40 @@ import { useAuth } from "./context/AuthContext";
 function App() {
 	const { currentUser } = useAuth();
 
-	const ProtectedRoute = ({ children }) => {
+	function ProtectedRoute({ children }) {
 		if (!currentUser) {
 			return <Navigate to="/" />;
 		}
 
 		return children;
-	};
+	}
+
+	function LoginCheck({ children }) {
+		if (currentUser) {
+			return <Navigate to="/chat" />;
+		}
+		return children;
+	}
 
 	return (
 		<Routes>
-			<Route path="/" element={<Login />} />
-			<Route path="/signup" element={<Signup />} />
+			<Route
+				path="/"
+				element={
+					<LoginCheck>
+						{" "}
+						<Login />
+					</LoginCheck>
+				}
+			/>
+			<Route
+				path="/signup"
+				element={
+					<LoginCheck>
+						<Signup />
+					</LoginCheck>
+				}
+			/>
 			<Route
 				path="/chat"
 				element={
