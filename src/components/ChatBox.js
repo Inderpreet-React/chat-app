@@ -42,6 +42,8 @@ export default function ChatBox() {
 					date: Timestamp.now(),
 				}),
 			});
+			setText("");
+
 			await updateDoc(doc(db, "userChats", currentUser.uid), {
 				[data.chatId + ".lastMessage"]: {
 					text,
@@ -55,8 +57,6 @@ export default function ChatBox() {
 				},
 				[data.chatId + ".date"]: serverTimestamp(),
 			});
-
-			setText("");
 		} catch (e) {
 			console.log(e);
 		}
@@ -75,10 +75,15 @@ export default function ChatBox() {
 			</div>
 			<div className="relative flex h-full w-full flex-col-reverse overflow-hidden overflow-y-auto border-2 border-gray-600 p-2 md:p-4">
 				<ul className="mb-20 flex flex-col items-end gap-4 ">
-					{/* {messages.map((m) => {
-						console.log(m);
-						return <ChatMessages isUser={false} message={m} key={m.id} />;
-					})} */}
+					{messages.map((m) => {
+						return (
+							<ChatMessages
+								isUser={Boolean(currentUser.uid === m.senderId)}
+								message={m.text}
+								key={m.id}
+							/>
+						);
+					})}
 				</ul>
 			</div>
 			<div className="absolute bottom-0 left-0 flex h-12 w-full overflow-hidden border-2 border-gray-600 bg-gray-100 md:w-full">

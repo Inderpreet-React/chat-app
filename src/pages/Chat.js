@@ -17,7 +17,7 @@ export default function Chat() {
 	const [chats, setChats] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const { currentUser } = useAuth();
-	const { dispatch } = useChat();
+	const { dispatch, data } = useChat();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -94,13 +94,18 @@ export default function Chat() {
 			</div>
 			<div className="h-1/2 w-full p-2 md:h-full md:w-2/3 md:p-0 md:pl-8">
 				<div className="relative flex h-full w-full flex-col items-center justify-center text-gray-600 ">
-					{/* <img
-						src={MessagingSvg}
-						alt="Messaging"
-						className="h-72 w-72 md:h-96 md:w-96"
-					/>
-					<p>Send and recieve messages with Bruh Chat.</p> */}
-					<ChatBox />
+					{!data ? (
+						<>
+							<img
+								src={MessagingSvg}
+								alt="Messaging"
+								className="h-72 w-72 md:h-96 md:w-96"
+							/>
+							<p>Send and recieve messages with Bruh Chat.</p>
+						</>
+					) : (
+						<ChatBox />
+					)}
 				</div>
 			</div>
 		</PageWrapper>
