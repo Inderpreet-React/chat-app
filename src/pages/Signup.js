@@ -93,19 +93,20 @@ export default function Signup() {
 				>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Email</p>
-						<input type="email" placeholder="eldermaster@69.com" />
+						<input required type="email" placeholder="eldermaster@69.com" />
 					</div>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Username</p>
-						<input type="text" placeholder="Eldermaster69" />
+						<input required type="text" placeholder="Eldermaster69" />
 					</div>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Password</p>
-						<input type="password" placeholder="**********" />
+						<input required type="password" placeholder="**********" />
 					</div>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Avatar</p>
 						<input
+							required
 							type="file"
 							className="text-slate-600 file:mr-4 file:rounded file:border-2 file:border-solid file:border-gray-400 file:bg-gray-100 file:p-1 file:font-semibold file:text-slate-600 file:transition-all hover:file:border-indigo-500"
 						/>

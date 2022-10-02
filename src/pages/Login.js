@@ -65,11 +65,11 @@ export default function Login() {
 				>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Email</p>
-						<input type="email" placeholder="sample@ex.com" />
+						<input required type="email" placeholder="sample@ex.com" />
 					</div>
 					<div className="input-wrapper">
 						<p className="text-gray-600">Password</p>
-						<input type="password" placeholder="**********" />
+						<input required type="password" placeholder="**********" />
 					</div>
 					{error ? <p className="font-semibold text-pink-500">{error}</p> : ""}
 					<button
