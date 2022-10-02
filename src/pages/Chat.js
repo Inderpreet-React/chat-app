@@ -94,7 +94,8 @@ export default function Chat() {
 			</div>
 			<div className="h-1/2 w-full p-2 md:h-full md:w-2/3 md:p-0 md:pl-8">
 				<div className="relative flex h-full w-full flex-col items-center justify-center text-gray-600 ">
-					{!data ? (
+					{console.log(data)}
+					{!data.chatId ? (
 						<>
 							<img
 								src={MessagingSvg}
