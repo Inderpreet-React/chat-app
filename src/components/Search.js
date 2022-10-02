@@ -22,9 +22,10 @@ export default function Search() {
 	const { currentUser } = useAuth();
 
 	async function handlerSelect() {
-		const combinedId = currentUser.uid
-			? currentUser.uid + user.uid
-			: user.uid + currentUser.uid;
+		const combinedId =
+			currentUser.uid > user.uid
+				? currentUser.uid + user.uid
+				: user.uid + currentUser.uid;
 		try {
 			const response = await getDoc(doc(db, "chats", combinedId));
 
@@ -38,7 +39,7 @@ export default function Search() {
 						displayName: user.displayName,
 						photoURL: user.photoURL,
 					},
-					[combinedId + "date"]: serverTimestamp(),
+					[combinedId + ".date"]: serverTimestamp(),
 				});
 
 				await updateDoc(doc(db, "userChats", user.uid), {
@@ -47,7 +48,7 @@ export default function Search() {
 						displayName: currentUser.displayName,
 						photoURL: currentUser.photoURL,
 					},
-					[combinedId + "date"]: serverTimestamp(),
+					[combinedId + ".date"]: serverTimestamp(),
 				});
 			} else {
 				console.log("Chat already exists");
@@ -75,8 +76,13 @@ export default function Search() {
 					console.log("else ran");
 					querySnapshot.forEach((user) => {
 						console.log("snapshot ran");
-						console.log(user.data());
-						setUser(user.data());
+						console.log(user.data().uid, currentUser.uid);
+						if (user.data().uid === currentUser.uid) {
+							console.log("trying to add yourself");
+							setError(true);
+						} else {
+							setUser(user.data());
+						}
 					});
 				}
 			} catch (e) {
@@ -117,7 +123,8 @@ export default function Search() {
 						className="h-7 w-7 cursor-pointer hover:text-pink-500"
 						onClick={() => {
 							setError(false);
-							setUserName(null);
+							setUser(null);
+							setUserName("");
 						}}
 					/>
 				</div>

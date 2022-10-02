@@ -58,6 +58,7 @@ export default function Signup() {
 			});
 		} catch (err) {
 			setError(true);
+			setLoading(false);
 			console.log(err.message);
 		}
 	};

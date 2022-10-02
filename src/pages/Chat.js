@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../PageWrapper";
 import MessagingSvg from "../images/messagingSvg.svg";
@@ -7,18 +7,32 @@ import {
 	ChatBubbleBottomCenterTextIcon,
 	ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import ChatDetails from "../components/ChatDetails";
 import ChatBox from "../components/ChatBox";
 import Search from "../components/Search";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default function Chat() {
-	const [chat, setChat] = useState(true);
+	const [chats, setChats] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const { currentUser } = useAuth();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		function getChats() {
+			const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+				setChats(doc.data());
+			});
+			return () => {
+				unsub();
+			};
+		}
+
+		currentUser.uid && getChats();
+	}, [currentUser.uid]);
 
 	function logOutHandler() {
 		if (!loading) {
@@ -55,19 +69,19 @@ export default function Chat() {
 					</div>
 				</div>
 				<Search />
+
 				<div className="h-full overflow-hidden overflow-y-auto rounded bg-indigo-100 p-1 md:bg-indigo-200">
 					<ul className="flex flex-col gap-2 divide-y-2 divide-indigo-600 ">
-						<ChatDetails
-							name="Something"
-							lastMessage="Good Bye"
-							avatar={Avatar}
-						/>
-						<ChatDetails name="Bruh" lastMessage="Hey" avatar={Avatar} />
-						<ChatDetails
-							name="Bro"
-							lastMessage="Where are you!"
-							avatar={Avatar}
-						/>
+						{chats
+							? Object.entries(chats).map((chat) => (
+									<ChatDetails
+										key={chat[0]}
+										name={chat[1].userInfo.displayName}
+										avatar={chat[1].userInfo.photoURL}
+										lastMessage={chat[1].lastMessage?.text}
+									/>
+							  ))
+							: ""}
 					</ul>
 				</div>
 			</div>
