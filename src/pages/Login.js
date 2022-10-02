@@ -12,8 +12,8 @@ export default function Login() {
 	const navigate = useNavigate();
 
 	async function loginHandler(e) {
-		e.preventDefault();
 		setLoading(true);
+		e.preventDefault();
 		const email = e.target[0].value;
 		const password = e.target[1].value;
 
@@ -25,15 +25,16 @@ export default function Login() {
 			signInWithEmailAndPassword(auth, email.trim(), password.trim())
 				.then((response) => {
 					console.log(response.user);
+					setLoading(false);
 					navigate("/chat");
 				})
 				.catch((e) => {
 					setError(e.message.replace("Firebase: Error ", "Error: "));
+					setLoading(false);
 				});
 		} catch (e) {
 			console.log(e.message);
 			setError(`${e.message}`);
-		} finally {
 			setLoading(false);
 		}
 	}
@@ -72,7 +73,9 @@ export default function Login() {
 					</div>
 					{error ? <p className="font-semibold text-pink-500">{error}</p> : ""}
 					<button
-						className="mt-4 w-1/2 self-end rounded bg-indigo-500 px-8 py-3 font-semibold text-white transition hover:bg-indigo-600 disabled:cursor-wait disabled:bg-indigo-600 disabled:text-gray-400 md:mt-8 md:w-2/3"
+						className={`mt-4 w-1/2 self-end rounded bg-indigo-500 px-8 py-3 font-semibold text-white transition hover:bg-indigo-600 disabled:bg-indigo-600 disabled:text-gray-400 md:mt-8 md:w-2/3 ${
+							loading ? "cursor-wait" : ""
+						}`}
 						type="submit"
 						disabled={loading}
 					>
