@@ -42,7 +42,6 @@ export default function ChatBox() {
 					date: Timestamp.now(),
 				}),
 			});
-			setText("");
 
 			await updateDoc(doc(db, "userChats", currentUser.uid), {
 				[data.chatId + ".lastMessage"]: {
@@ -57,6 +56,7 @@ export default function ChatBox() {
 				},
 				[data.chatId + ".date"]: serverTimestamp(),
 			});
+			setText("");
 		} catch (e) {
 			console.log(e);
 		}
