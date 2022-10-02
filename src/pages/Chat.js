@@ -4,10 +4,29 @@ import MessagingSvg from "../images/messagingSvg.svg";
 import Avatar from "../images/avatar.png";
 import ChatDetails from "../components/ChatDetails";
 import ChatBox from "../components/ChatBox";
-import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
+import {
+	ChatBubbleBottomCenterTextIcon,
+	ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 
 export default function Chat() {
 	const [chat, setChat] = useState(true);
+	const [loading, setLoading] = useState(false);
+
+	function logOutHandler() {
+		if (!loading) {
+			try {
+				setLoading(true);
+				signOut(auth);
+			} catch (error) {
+				console.log(error.code, error.message);
+			} finally {
+				setLoading(false);
+			}
+		} else return;
+	}
 
 	return (
 		<PageWrapper additionalClasses="divide-y-2 md:divide-y-0 md:divide-x-2 divide-gray-700">
@@ -16,7 +35,13 @@ export default function Chat() {
 					<h1 className="flex h-full items-end text-2xl font-semibold text-indigo-500">
 						Bruh Chat
 					</h1>
-					<img src={Avatar} alt="Avatar" className="h-10 w-10" />
+					<div className="flex items-center justify-center">
+						<img src={Avatar} alt="Avatar" className="h-10 w-10" />
+						<ArrowRightOnRectangleIcon
+							onClick={logOutHandler}
+							className="h-8 w-8 cursor-pointer text-indigo-400 hover:text-indigo-600"
+						/>
+					</div>
 				</div>
 				<input type="text" placeholder="Search" className="w-full" />
 				<div className="h-full overflow-hidden overflow-y-auto rounded bg-indigo-100 p-1 md:bg-indigo-200">
