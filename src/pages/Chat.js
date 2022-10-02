@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import PageWrapper from "../PageWrapper";
 import MessagingSvg from "../images/messagingSvg.svg";
 import Avatar from "../images/avatar.png";
-import ChatDetails from "../components/ChatDetails";
-import ChatBox from "../components/ChatBox";
 import {
 	ChatBubbleBottomCenterTextIcon,
 	ArrowRightOnRectangleIcon,
@@ -12,6 +10,9 @@ import {
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
+import ChatDetails from "../components/ChatDetails";
+import ChatBox from "../components/ChatBox";
+import Search from "../components/Search";
 
 export default function Chat() {
 	const [chat, setChat] = useState(true);
@@ -43,7 +44,7 @@ export default function Chat() {
 					<div className="flex items-center justify-center gap-2 md:gap-4">
 						<span className="text-gray-600">{currentUser.displayName}</span>
 						<img
-							src={currentUser.photoURL}
+							src={currentUser.photoURL || Avatar}
 							alt="Avatar"
 							className="flex h-8 w-8 items-center justify-center rounded-full ring-2 ring-indigo-600"
 						/>
@@ -53,7 +54,7 @@ export default function Chat() {
 						/>
 					</div>
 				</div>
-				<input type="text" placeholder="Search" className="w-full" />
+				<Search />
 				<div className="h-full overflow-hidden overflow-y-auto rounded bg-indigo-100 p-1 md:bg-indigo-200">
 					<ul className="flex flex-col gap-2 divide-y-2 divide-indigo-600 ">
 						<ChatDetails
