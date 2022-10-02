@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PageWrapper from "../PageWrapper";
 import MessagingSvg from "../images/messagingSvg.svg";
 import Avatar from "../images/avatar.png";
-import {
-	ChatBubbleBottomCenterTextIcon,
-	ArrowRightOnRectangleIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
@@ -14,11 +11,13 @@ import ChatDetails from "../components/ChatDetails";
 import ChatBox from "../components/ChatBox";
 import Search from "../components/Search";
 import { doc, onSnapshot } from "firebase/firestore";
+import { useChat } from "../context/ChatContext";
 
 export default function Chat() {
 	const [chats, setChats] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const { currentUser } = useAuth();
+	const { dispatch } = useChat();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -33,6 +32,11 @@ export default function Chat() {
 
 		currentUser.uid && getChats();
 	}, [currentUser.uid]);
+
+	function handlerSelect(u) {
+		console.log("dispatched");
+		dispatch({ type: "CHANGE_USER", payload: u });
+	}
 
 	function logOutHandler() {
 		if (!loading) {
@@ -79,6 +83,8 @@ export default function Chat() {
 										name={chat[1].userInfo.displayName}
 										avatar={chat[1].userInfo.photoURL}
 										lastMessage={chat[1].lastMessage?.text}
+										details={chat[1]}
+										handlerSelect={handlerSelect}
 									/>
 							  ))
 							: ""}
@@ -94,16 +100,6 @@ export default function Chat() {
 					/>
 					<p>Send and recieve messages with Bruh Chat.</p> */}
 					<ChatBox />
-					<div className="absolute bottom-0 left-0 flex h-12 w-full overflow-hidden border-2 border-gray-600 bg-gray-100 md:w-full">
-						<textarea
-							type="text"
-							placeholder="Message"
-							className="m-1 w-11/12 resize-none rounded-none border-0 bg-gray-100 shadow-none focus:border-transparent focus:shadow-none focus:ring-0"
-						/>
-						<div className="flex h-full w-1/12 cursor-pointer items-center justify-center bg-gray-100 ">
-							<ChatBubbleBottomCenterTextIcon className="h-7 w-7 bg-gray-100 text-indigo-500 hover:text-indigo-600  md:h-10 md:w-10" />
-						</div>
-					</div>
 				</div>
 			</div>
 		</PageWrapper>
