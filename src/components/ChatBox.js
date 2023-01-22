@@ -98,7 +98,7 @@ export default function ChatBox() {
 					onKeyDown={handleKey}
 					type="text"
 					placeholder="Message"
-					className="m-1 w-11/12 resize-none rounded-none border-0 bg-gray-100 shadow-none focus:border-transparent focus:shadow-none focus:ring-0"
+					className="w-11/12 resize-none rounded-none border-0 bg-gray-100 shadow-none focus:border-transparent focus:shadow-none focus:ring-0"
 				/>
 				<div
 					className="flex h-full w-1/12 cursor-pointer items-center justify-center bg-gray-100"
