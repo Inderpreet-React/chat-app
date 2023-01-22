@@ -65,7 +65,7 @@ export default function Search() {
 			console.log("request send");
 			setError(false);
 			const usersRef = collection(db, "users");
-			const q = query(usersRef, where("displayName", "==", userName));
+			const q = query(usersRef, where("email", "==", userName));
 			setUser("");
 			try {
 				const querySnapshot = await getDocs(q);
