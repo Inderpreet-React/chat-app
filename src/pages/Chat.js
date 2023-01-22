@@ -59,16 +59,23 @@ export default function Chat() {
 						Bruh Chat
 					</h1>
 					<div className="flex items-center justify-center gap-2 md:gap-4">
-						<span className="text-gray-600">{currentUser.displayName}</span>
+						<span className="font-semibold text-gray-600">
+							{currentUser.displayName}
+						</span>
 						<img
 							src={currentUser.photoURL || Avatar}
 							alt="Avatar"
 							className="flex h-8 w-8 items-center justify-center rounded-full ring-2 ring-indigo-600"
 						/>
-						<ArrowRightOnRectangleIcon
-							onClick={logOutHandler}
-							className="h-8 w-8 cursor-pointer text-indigo-400 hover:text-indigo-600"
-						/>
+						<div className="group relative">
+							<ArrowRightOnRectangleIcon
+								onClick={logOutHandler}
+								className="h-8 w-8 cursor-pointer text-indigo-400 hover:text-indigo-600"
+							/>
+							<p className="absolute bottom-full left-full font-semibold text-rose-600 opacity-0 group-hover:opacity-100">
+								Logout
+							</p>
+						</div>
 					</div>
 				</div>
 				<Search />
