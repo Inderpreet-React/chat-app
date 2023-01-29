@@ -72,7 +72,7 @@ export default function Chat() {
 								onClick={logOutHandler}
 								className="h-8 w-8 cursor-pointer text-indigo-400 hover:text-indigo-600"
 							/>
-							<p className="absolute bottom-full left-full font-semibold text-rose-600 opacity-0 group-hover:opacity-100">
+							<p className="absolute bottom-full left-1/4 font-semibold text-indigo-600 opacity-0 group-hover:opacity-100">
 								Logout
 							</p>
 						</div>
@@ -86,6 +86,7 @@ export default function Chat() {
 							? Object.entries(chats)
 									.sort((a, b) => b[1].date - a[1].date)
 									.map((chat) => (
+										// console.log(chat)
 										<ChatDetails
 											key={chat[0]}
 											name={chat[1].userInfo.displayName}
